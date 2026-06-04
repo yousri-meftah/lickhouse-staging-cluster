@@ -26,9 +26,8 @@ def main():
     for db in DATABASES:
         print(f"\n── {db}")
         tables = q(
-            f"SELECT name FROM system.tables "
-            f"WHERE database='{db}' AND engine LIKE 'Replicated%'"
-        ).splitlines()
+    f"SELECT table FROM system.replicas WHERE database='{db}' AND is_readonly = 1"
+).splitlines()
         for table in tables:
             q(f"SYSTEM RESTORE REPLICA `{db}`.`{table}`")
             print(f"  ✓ RESTORE {table}")
